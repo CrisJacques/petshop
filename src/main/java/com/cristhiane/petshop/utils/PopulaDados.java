@@ -30,8 +30,8 @@ public class PopulaDados {
 		
 		Produto p1 = new Produto(null, "Ração", 100.0);
 		Produto p2 = new Produto(null, "Sache", 80.0);
-		Produto p3 = new Produto(null, "Shampoo", 50.0);
-		Produto p4 = new Produto(null, "Vermifugo", 20.0);
+		Produto p3 = new Produto(null, "Vermifugo", 20.0);
+		Produto p4 = new Produto(null, "Shampoo", 50.0);
 		
 		cat1.getProdutos().addAll(Arrays.asList(p1, p2)); //o getProdutos() veio do generate getters e setters lá na classe Categoria
 		cat2.getProdutos().addAll(Arrays.asList(p3, p4));

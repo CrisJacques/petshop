@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Produto implements Serializable {
 	
@@ -24,6 +26,8 @@ public class Produto implements Serializable {
 	private String nome;
 	private Double preco;
 	
+	@JsonIgnore // como o relacionamento entre produto e categoria é muitos para muitos, sem esse @JsonIgnore acontece uma referência cíclica, aí pra montar o JSON da resposta uma classe fica chamando a outra.
+	// Como queremos que ao buscar uma categoria venham os produtos relacionados, mas não queremos que quando buscarmos os produtos venham as categorias, então temos que adicionar essa anotação aqui nos produtos!
 	@ManyToMany // no relacionamento muitos para muitos, é criada uma nova tabela contendo os ids dos dois membros do relacionamento (no caso aqui, produtos e categorias)
 	@JoinTable(name = "PRODUTO_CATEGORIA", //setando o nome da tabela que vai armazenar esses relacionamentos
 				joinColumns = @JoinColumn(name = "id_produto"), // setando o nome da coluna que vai armazenar o id do produto
