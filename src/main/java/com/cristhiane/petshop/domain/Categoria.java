@@ -1,12 +1,15 @@
 package com.cristhiane.petshop.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 // Nesta classe está anotado tudo o que precisa ser feito dentro das classes de domínio de uma aplicação que usa o Spring Framework
 
@@ -24,6 +27,9 @@ public class Categoria implements Serializable  {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //definindo a estratégia de geração automática de valor dessa coluna
 	private Integer id;
 	private String nome;
+	
+	@ManyToMany(mappedBy = "categorias") //eu só preciso informar aqui o categorias porque lá na classe Produto eu já associei toda a configuração da tabela que será criada ao objeto categorias
+	private List<Produto> produtos = new ArrayList<>();
 	
 	//PASSO 2: Criar construtores vazio e com campos
 	public Categoria() {
@@ -70,6 +76,14 @@ public class Categoria implements Serializable  {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
 	}
 	
 	
