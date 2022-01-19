@@ -9,43 +9,56 @@ import org.springframework.stereotype.Component;
 
 import com.cristhiane.petshop.domain.Categoria;
 import com.cristhiane.petshop.domain.Cidade;
+import com.cristhiane.petshop.domain.Cliente;
+import com.cristhiane.petshop.domain.Endereco;
 import com.cristhiane.petshop.domain.Especie;
 import com.cristhiane.petshop.domain.Estado;
+import com.cristhiane.petshop.domain.Funcionario;
 import com.cristhiane.petshop.domain.Pet;
 import com.cristhiane.petshop.domain.Produto;
 import com.cristhiane.petshop.domain.Raca;
 import com.cristhiane.petshop.repository.CategoriaRepository;
 import com.cristhiane.petshop.repository.CidadeRepository;
+import com.cristhiane.petshop.repository.EnderecoRepository;
 import com.cristhiane.petshop.repository.EspecieRepository;
 import com.cristhiane.petshop.repository.EstadoRepository;
+import com.cristhiane.petshop.repository.PessoaRepository;
 import com.cristhiane.petshop.repository.PetRepository;
 import com.cristhiane.petshop.repository.ProdutoRepository;
 import com.cristhiane.petshop.repository.RacaRepository;
 
-@Component // aqui é pra indicar que essa classe não tem nenhum papel específico (não é controller, nem service nem repository)
+@Component // aqui é pra indicar que essa classe não tem nenhum papel específico (não é
+			// controller, nem service nem repository)
 public class PopulaDados {
-	
-	@Autowired // pois como vamos usar os repositories para popular o banco de dados de teste, precisamos injetar a dependência deles
+
+	@Autowired // pois como vamos usar os repositories para popular o banco de dados de teste,
+				// precisamos injetar a dependência deles
 	CategoriaRepository categoriaRepository;
-	
+
 	@Autowired
 	ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	EspecieRepository especieRepository;
-	
+
 	@Autowired
 	RacaRepository racaRepository;
-	
+
 	@Autowired
 	PetRepository petRepository;
-	
+
 	@Autowired
 	EstadoRepository estadoRepository;
-	
+
 	@Autowired
 	CidadeRepository cidadeRepository;
-	
+
+	@Autowired
+	PessoaRepository pessoaRepository;
+
+	@Autowired
+	EnderecoRepository enderecoRepository;
+
 	@PostConstruct // essa anotação faz com que esse método seja executado logo após a aplicação
 					// ser construída (enquanto estamos só desenvolvendo e testando, podemos deixar
 					// assim)
@@ -104,6 +117,19 @@ public class PopulaDados {
 
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Cliente clt1 = new Cliente(null, "Jose Maria", "jose@mail.com", "335.194.320-21", "FISICA");
+		clt1.getTelefones().addAll(Arrays.asList("3516-2000","9191-0000"));
+		
+		Funcionario fnc1 = new Funcionario(null, "Maria Jose", "maria@mail.com", "551.872.200.12", "ATENDENTE");
+		fnc1.getTelefones().addAll(Arrays.asList("3279-0001","9090-0002"));
+		
+		Endereco end1 = new Endereco(null, "Rua Tupis", "500", "Apto 101", "Pindorama", "30111222", c1, clt1);
+		Endereco end2 = new Endereco(null, "Av. Tamoios", "100", "Casa", "Oca", "3968000", c2, fnc1);
+		Endereco end3 = new Endereco(null, "Rua Aranãs", "10", "Apto 201", "Centro", "01153000", c3, fnc1);
+		
+		pessoaRepository.saveAll(Arrays.asList(clt1, fnc1));
+		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
 	}
 
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.cristhiane.petshop.domain.Pet;
 
-// Este é o modelo para criação de repositories. Sempre serão dessa forma, só muda o tipo de objeto (no caso, substituímos só o "Categoria" na declaração da interface)
 @Repository
 public interface PetRepository extends JpaRepository<Pet, Integer> {
 
