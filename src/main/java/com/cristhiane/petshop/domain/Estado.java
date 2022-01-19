@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Estado implements Serializable {
 
@@ -21,6 +23,7 @@ public class Estado implements Serializable {
 	private Integer id;
 	private String nome;
 	
+	@JsonIgnore // porque eu não quero que ao chamar um estado seja retornada a lista de cidades, porque as cidades chamam o estado e aí vira loop infinito na montagem da resposta
 	@OneToMany(mappedBy = "estado")
 	private List<Cidade> cidades = new ArrayList<>();
 	
