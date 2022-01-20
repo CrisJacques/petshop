@@ -34,6 +34,9 @@ public class Produto implements Serializable {
 				inverseJoinColumns = @JoinColumn(name = "id_categoria")) // setando o nome da coluna que vai armazenar o id da categoria
 	private List<Categoria> categorias = new ArrayList<>(); //como o relacionamento é many to many, tem que criar uma coleção de categorias aqui e lá na classe Categoria tem que criar uma coleção de produtos
 	
+	@ManyToMany(mappedBy = "produtos")
+	private List<Servico> servicos = new ArrayList<>();
+	
 	public Produto() {
 		
 	}
@@ -92,6 +95,14 @@ public class Produto implements Serializable {
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public List<Servico> getServicos() {
+		return servicos;
+	}
+
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
 	}
 	
 	
