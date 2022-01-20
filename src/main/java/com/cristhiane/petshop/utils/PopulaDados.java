@@ -78,7 +78,7 @@ public class PopulaDados {
 					// ser construída (enquanto estamos só desenvolvendo e testando, podemos deixar
 					// assim)
 	// Quando formos usar o banco real (MySQL), aí temos que desativar isso, pq
-	// senão cada vez que a gente subir a aplicação ele vai popular esses dados lá!
+	// senão cada vez que a gente subir a aplicação ele vai popular esses dados lá! Tem que executar com o @PostConstruct só na primeira vez!
 	public void cadastrar() throws ParseException {// esse ParseException vem do parse da data quando se adiciona um serviço, lá embaixo
 		Categoria cat1 = new Categoria(null, "Alimento"); // não precisamos nos preocupar em informar id porque o JPA já
 															// vai cuidar de criar os ids dos objetos
