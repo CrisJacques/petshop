@@ -16,7 +16,7 @@ import com.cristhiane.petshop.domain.enums.SituacaoPagamento;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // como essa é a classe mãe, temos que adicionar o @Inheritance e dizer como será feita a criação das tabelas das classes filhas
 //A opção JOINED siginfica que será criada uma tabela para cada classe filha, onde serão armazenados os atributos que não são comuns à classe mãe
-public class Pagamento implements Serializable {
+public abstract class Pagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -24,7 +24,7 @@ public class Pagamento implements Serializable {
 	// O MapsId vai fazer com que a chave primária da tabela pagamento seja o id_servico, ao invés de criar mais uma coluna só pra chave primária!!!
 	private Integer id;
 	private Double valor;
-	private SituacaoPagamento situacaoPagamento;
+	private Integer situacao;
 	
 	@OneToOne
 	@JoinColumn(name = "id_servico") // eu configuro a relação aqui porque o pagamento só existe se existir um serviço. Logo, o id_servico será uma chave estrangeira dentro da tabela de pagamentos
@@ -35,11 +35,11 @@ public class Pagamento implements Serializable {
 		
 	}
 
-	public Pagamento(Integer id, Double valor, SituacaoPagamento situacaoPagamento, Servico servico) {
+	public Pagamento(Integer id, Double valor, SituacaoPagamento situacao, Servico servico) {
 		super();
 		this.id = id;
 		this.valor = valor;
-		this.situacaoPagamento = situacaoPagamento;
+		this.situacao = situacao.getCod(); //pegando o código da opção para depois salvar isso no banco
 		this.setServico(servico);
 	}
 
@@ -76,12 +76,12 @@ public class Pagamento implements Serializable {
 		this.valor = valor;
 	}
 
-	public SituacaoPagamento getSituacaoPagamento() {
-		return situacaoPagamento;
+	public SituacaoPagamento getSituacao() {
+		return SituacaoPagamento.toEnum(situacao);
 	}
 
-	public void setSituacaoPagamento(SituacaoPagamento situacaoPagamento) {
-		this.situacaoPagamento = situacaoPagamento;
+	public void setSituacao(SituacaoPagamento situacao) {
+		this.situacao = situacao.getCod();
 	}
 
 	public Servico getServico() {

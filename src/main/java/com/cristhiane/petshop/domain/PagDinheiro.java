@@ -11,27 +11,27 @@ public class PagDinheiro extends Pagamento {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Date dataPagamento;
+	private Date dataVencimento;
 	private Double desconto;
 	
 	public PagDinheiro() {
 		
 	}
 
-	public PagDinheiro(Integer id, Double valor, SituacaoPagamento situacaoPagamento, Servico servico, Date dataPagamento, Double desconto) {
+	public PagDinheiro(Integer id, Double valor, SituacaoPagamento situacaoPagamento, Servico servico, Date dataVencimento, Double desconto) {
 		super(id, valor, situacaoPagamento, servico);
-		this.dataPagamento = dataPagamento;
+		this.dataVencimento = dataVencimento;
 		this.desconto = desconto;
 	}
 
 	// nesta classe e na PagCartao não precisa criar os métodos hashCode e equals porque eles serão herdados da classe mãe!
 	
-	public Date getDataPagamento() {
-		return dataPagamento;
+	public Date getdataVencimento() {
+		return dataVencimento;
 	}
 
-	public void setDataPagamento(Date dataPagamento) {
-		this.dataPagamento = dataPagamento;
+	public void setdataVencimento(Date dataVencimento) {
+		this.dataVencimento = dataVencimento;
 	}
 
 	public Double getDesconto() {

@@ -1,5 +1,7 @@
 package com.cristhiane.petshop.utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import javax.annotation.PostConstruct;
@@ -14,18 +16,25 @@ import com.cristhiane.petshop.domain.Endereco;
 import com.cristhiane.petshop.domain.Especie;
 import com.cristhiane.petshop.domain.Estado;
 import com.cristhiane.petshop.domain.Funcionario;
+import com.cristhiane.petshop.domain.PagCartao;
+import com.cristhiane.petshop.domain.PagDinheiro;
+import com.cristhiane.petshop.domain.Pagamento;
 import com.cristhiane.petshop.domain.Pet;
 import com.cristhiane.petshop.domain.Produto;
 import com.cristhiane.petshop.domain.Raca;
+import com.cristhiane.petshop.domain.Servico;
+import com.cristhiane.petshop.domain.enums.SituacaoPagamento;
 import com.cristhiane.petshop.repository.CategoriaRepository;
 import com.cristhiane.petshop.repository.CidadeRepository;
 import com.cristhiane.petshop.repository.EnderecoRepository;
 import com.cristhiane.petshop.repository.EspecieRepository;
 import com.cristhiane.petshop.repository.EstadoRepository;
+import com.cristhiane.petshop.repository.PagamentoRepository;
 import com.cristhiane.petshop.repository.PessoaRepository;
 import com.cristhiane.petshop.repository.PetRepository;
 import com.cristhiane.petshop.repository.ProdutoRepository;
 import com.cristhiane.petshop.repository.RacaRepository;
+import com.cristhiane.petshop.repository.ServicoRepository;
 
 @Component // aqui é pra indicar que essa classe não tem nenhum papel específico (não é
 			// controller, nem service nem repository)
@@ -58,13 +67,19 @@ public class PopulaDados {
 
 	@Autowired
 	EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	ServicoRepository servicoRepository;
+	
+	@Autowired
+	PagamentoRepository pagamentoRepository;
 
 	@PostConstruct // essa anotação faz com que esse método seja executado logo após a aplicação
 					// ser construída (enquanto estamos só desenvolvendo e testando, podemos deixar
 					// assim)
 	// Quando formos usar o banco real (MySQL), aí temos que desativar isso, pq
 	// senão cada vez que a gente subir a aplicação ele vai popular esses dados lá!
-	public void cadastrar() {
+	public void cadastrar() throws ParseException {// esse ParseException vem do parse da data quando se adiciona um serviço, lá embaixo
 		Categoria cat1 = new Categoria(null, "Alimento"); // não precisamos nos preocupar em informar id porque o JPA já
 															// vai cuidar de criar os ids dos objetos
 		Categoria cat2 = new Categoria(null, "Remédio");
@@ -130,6 +145,24 @@ public class PopulaDados {
 		
 		pessoaRepository.saveAll(Arrays.asList(clt1, fnc1));
 		enderecoRepository.saveAll(Arrays.asList(end1, end2, end3));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Servico srv1 = new Servico(null, sdf.parse("02/09/2021 09:00"), sdf.parse("02/09/2021 12:00"), "Tosa", clt1, fnc1);// adicionado um throw ParseException lá na definição do método
+		// Não precisamos nos preocupar em tratar essa exceção porque aqui estamos fazendo um cadastro na mão mesmo, então não tem perigo de dar problema
+		Servico srv2 = new Servico(null, sdf.parse("03/09/2021 12:00"), sdf.parse("04/09/2021 12:00"), "Hotel", clt1, fnc1);
+		
+		Pagamento pgt1 = new PagCartao(null, 60.00, SituacaoPagamento.QUITADO, srv2, 6);
+		srv2.setPagamento(pgt1);
+		
+		Pagamento pgt2 = new PagDinheiro(null, 100.00, SituacaoPagamento.PENDENTE, srv1, sdf.parse("02/09/2021 00:00"), null);
+		srv1.setPagamento(pgt2);
+		
+		clt1.getServicos().addAll(Arrays.asList(srv1, srv2));
+		fnc1.getServicos().addAll(Arrays.asList(srv1, srv2));
+		
+		servicoRepository.saveAll(Arrays.asList(srv1, srv2));
+		pagamentoRepository.saveAll(Arrays.asList(pgt1, pgt2));
 	}
 
 }

@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -26,17 +28,26 @@ public class Servico implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "servico")// incluído o cascade porque qualquer coisa que eu fizer com o serviço (por exemplo, deletar) tem que ser refletida no pagamento que está associado a ele
 	private Pagamento pagamento;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_funcionario")
+	private Funcionario funcionario;
+	
 	public Servico() {
 		
 	}
 
-	public Servico(Integer id, Date dataEntrada, Date dataSaida, String descricao, Pagamento pagamento) {
+	public Servico(Integer id, Date dataEntrada, Date dataSaida, String descricao, Cliente cliente, Funcionario funcionario) {
 		super();
 		this.id = id;
 		this.dataEntrada = dataEntrada;
 		this.dataSaida = dataSaida;
 		this.descricao = descricao;
-		this.setPagamento(pagamento);
+		this.setCliente(cliente);
+		this.setFuncionario(funcionario);
 	}
 
 	@Override
@@ -94,6 +105,22 @@ public class Servico implements Serializable {
 
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
+	}
+
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 	
 	
