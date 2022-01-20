@@ -2,6 +2,7 @@ package com.cristhiane.petshop.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cristhiane.petshop.domain.Pessoa;
+import com.cristhiane.petshop.dto.PessoaDTO;
 import com.cristhiane.petshop.service.PessoaService;
 
 @RestController // marcando a classe como um controlador REST (o Spring exige isso)
@@ -66,12 +68,14 @@ public class PessoaResource {
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)// quando eu fizer um GET /pessoas, o fluxo vem pra esse método aqui embaixo
-	public ResponseEntity<List<Pessoa>> findAll() {
+	public ResponseEntity<List<PessoaDTO>> findAll() {
 		// o <?> depois do ResponseEntity quer dizer que qualquer tipo de objeto pode ser retornado
 		// o ResponseEntity permite devolver para o cliente uma resposta mais completa
 		
-		List<Pessoa> list = service.findAll();
+		List<Pessoa> list = service.findAll(); // o findAll do service retorna uma lista de entidades Pessoa, mas queremos que sejam retornados os DTOs. 
+		//Abaixo, essa conversão é feita:
+		List<PessoaDTO> listDto = list.stream().map(obj -> new PessoaDTO(obj)).collect(Collectors.toList());
 		
-		return ResponseEntity.ok().body(list); // se deu tudo certo, retorna a lista de pessoas dentro da resposta da requisição
+		return ResponseEntity.ok().body(listDto); // se deu tudo certo, retorna a lista de pessoas (apenas com as informações do DTO) dentro da resposta da requisição
 	}
 }
