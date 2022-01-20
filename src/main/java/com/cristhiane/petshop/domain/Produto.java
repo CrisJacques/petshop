@@ -34,6 +34,7 @@ public class Produto implements Serializable {
 				inverseJoinColumns = @JoinColumn(name = "id_categoria")) // setando o nome da coluna que vai armazenar o id da categoria
 	private List<Categoria> categorias = new ArrayList<>(); //como o relacionamento é many to many, tem que criar uma coleção de categorias aqui e lá na classe Categoria tem que criar uma coleção de produtos
 	
+	@JsonIgnore //porque eu não quero que o produto retorne os serviços, porque o serviço já retorna os produtos e aí vira referência cíclica
 	@ManyToMany(mappedBy = "produtos")
 	private List<Servico> servicos = new ArrayList<>();
 	

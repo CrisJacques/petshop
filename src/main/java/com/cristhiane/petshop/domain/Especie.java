@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Especie implements Serializable {
 
@@ -21,6 +23,7 @@ public class Especie implements Serializable {
 	private Integer id;
 	private String descricao;
 	
+	@JsonIgnore //porque eu não quero que a espécie retorne os pets, pois o pet já retorna a espécie e aí vira referência cíclica
 	@OneToMany(mappedBy = "especie") //uma espécie pode ter vários pets associados. Mapeamos por "especie" pois esse é o nome do objeto que recebeu a configuração do relacionamento lá na classe Pet
 	private List<Pet> pets = new ArrayList<>();
 	

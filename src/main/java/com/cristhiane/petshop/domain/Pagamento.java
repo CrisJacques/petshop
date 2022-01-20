@@ -12,6 +12,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.cristhiane.petshop.domain.enums.SituacaoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) // como essa é a classe mãe, temos que adicionar o @Inheritance e dizer como será feita a criação das tabelas das classes filhas
@@ -26,6 +27,7 @@ public abstract class Pagamento implements Serializable {
 	private Double valor;
 	private Integer situacao;
 	
+	@JsonIgnore //porque eu não quero que ao buscar o pagamento ele retorne o serviço correspondente, porque o serviço retorna o pagamento e aí vira loop infinito (referência cíclica)
 	@OneToOne
 	@JoinColumn(name = "id_servico") // eu configuro a relação aqui porque o pagamento só existe se existir um serviço. Logo, o id_servico será uma chave estrangeira dentro da tabela de pagamentos
 	@MapsId

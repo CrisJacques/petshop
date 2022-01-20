@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Cliente extends Pessoa {
 
@@ -13,6 +15,7 @@ public class Cliente extends Pessoa {
 	
 	private String tipo;
 	
+	@JsonIgnore //porque eu não quero que o cliente retorne os serviços correspondentes, porque o serviço já retorna o cliente e aí vira referência cíclica
 	@OneToMany(mappedBy = "cliente")
 	private List<Servico> servicos = new ArrayList<>();
 	
